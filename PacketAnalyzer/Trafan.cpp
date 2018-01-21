@@ -6,8 +6,8 @@
 #pragma comment(lib , "wpcap.lib") //For winpcap
 #include "Trafan.h"
 
-
 using namespace std;
+
 
 
 // Set the packing to a 1 byte boundary
@@ -114,6 +114,8 @@ Trafan::Trafan()
 {
 
 }
+int counter = 0;
+
 void Trafan::Initialize(u_int inum, System::Windows::Forms::DataGridView^ dataGridView1)
 {
 	DataGridView1 = dataGridView1;
@@ -183,7 +185,7 @@ void Trafan::Initialize(u_int inum, System::Windows::Forms::DataGridView^ dataGr
 	}
 
 	//read packets in a loop :)
-	int counter = 0;
+	
 	while ((res = pcap_next_ex(fp, &header, (const u_char**)&pkt_data)) >= 0 && counter < 100)
 	{
 		if (res == 0)
@@ -191,8 +193,7 @@ void Trafan::Initialize(u_int inum, System::Windows::Forms::DataGridView^ dataGr
 			// Timeout elapsed
 			continue;
 		}
-
-		counter++;
+				counter++;
 		seconds = header->ts.tv_sec;
 		localtime_s(&tbreak, &seconds);
 		strftime((char*)buffer, 80, "%d-%b-%Y %I:%M:%S %p", &tbreak);
@@ -216,6 +217,7 @@ void Trafan::ProcessPacket(u_char* Buffer, int Size)
 	ethhdr = (ETHER_HDR *)Buffer;
 	++total;
 	DataGridView1->Rows->Add(1);
+	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["No"]->Value = DataGridView1->RowCount - 1;
 	//Ip packets
 	if (ntohs(ethhdr->type) == 0x0800)
 	{
@@ -295,8 +297,10 @@ void Trafan::PrintIpHeader(unsigned char* Buffer, int Size)
 	ZeroMemory(x, 256);
 	sprintf(x, "%s\n", inet_ntoa(source.sin_addr));
 	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["SrcIP"]->Value = gcnew System::String(x);
+
 	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TTL"]->Value = ((unsigned int)iphdr->ip_ttl);
 	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["PckLength"]->Value = ntohs(iphdr->ip_total_length);
+	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["IPvers"]->Value = ((unsigned int)iphdr->ip_version);
 	print_ethernet_header((u_char*)Buffer);
 
 	fprintf(logfile, "\n");
@@ -337,7 +341,7 @@ void Trafan::PrintTcpPacket(u_char* Buffer, int Size)
 
 
 	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["DstPort"]->Value = (ntohs(tcpheader->dest_port));
-	
+	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["SrcPort"]->Value = (ntohs(tcpheader->source_port));
 	if ((unsigned int)tcpheader->ack){
 	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "ACK";
 	}
@@ -406,6 +410,7 @@ void Trafan::print_udp_packet(u_char *Buffer, int Size)
 	fprintf(logfile, "\n\n***********************UDP Packet*************************\n");
 	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["DstPort"]->Value = (ntohs(udpheader->dest_port));
 	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["Prot"]->Value = gcnew System::String("UDP");
+	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["SrcPort"]->Value = (ntohs(udpheader->source_port)); 
 	PrintIpHeader(Buffer, Size);
 
 	fprintf(logfile, "\nUDP Header\n");
@@ -443,6 +448,7 @@ void Trafan::PrintIcmpPacket(u_char* Buffer, int Size)
 	fprintf(logfile, "\n\n***********************ICMP Packet*************************\n");
 	
 	DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["Prot"]->Value = gcnew System::String("ICMP"); 
+	
 	PrintIpHeader(Buffer, Size);
 
 	fprintf(logfile, "\n");
