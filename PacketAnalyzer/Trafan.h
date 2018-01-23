@@ -7,17 +7,20 @@
 #include "winsock2.h"   //need winsock for inet_ntoa and ntohs methods
 #define HAVE_REMOTE
 #include "pcap.h"   //Winpcap :)
-
+#include "TrafStat.h"
 #pragma comment(lib , "ws2_32.lib") //For winsock
 #pragma comment(lib , "wpcap.lib") //For winpcap
 
-ref class Trafan
+public ref class Trafan
 {
 	//some packet processing functions
 public:
 	System::Windows::Forms::DataGridView^ DataGridView1;
+	u_int Inum;
+
+
 	Trafan();
-	void Initialize(u_int, System::Windows::Forms::DataGridView^);
+	void Initialize();
 	void PrintIpHeader(unsigned char*, int);
 	void PrintData(u_char*, int);
 	void ProcessPacket(u_char*, int); //This will decide how to digest
@@ -27,4 +30,4 @@ public:
 	void PrintTcpPacket(u_char*, int);
 
 };
-	
+
