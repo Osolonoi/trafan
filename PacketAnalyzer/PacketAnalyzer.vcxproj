@@ -135,16 +135,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Trafan.cpp" />
+    <ClCompile Include="Notification.cpp" />
     <ClCompile Include="TrafStat.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Trafan.h" />
+    <ClInclude Include="Notification.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="TrafStat.h">
       <FileType>CppForm</FileType>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Notification.resx">
+      <DependentUpon>Notification.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TrafStat.resx">
       <DependentUpon>TrafStat.h</DependentUpon>
     </EmbeddedResource>

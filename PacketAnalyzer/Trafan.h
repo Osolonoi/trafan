@@ -11,7 +11,7 @@
 #pragma comment(lib , "ws2_32.lib") //For winsock
 #pragma comment(lib , "wpcap.lib") //For winpcap
 
-public ref class Trafan
+public ref class MyThreadClass
 {
 	//some packet processing functions
 public:
@@ -19,7 +19,7 @@ public:
 	u_int Inum;
 
 
-	Trafan();
+	MyThreadClass(TrafStat^ myForm);
 	void Initialize();
 	void PrintIpHeader(unsigned char*, int);
 	void PrintData(u_char*, int);

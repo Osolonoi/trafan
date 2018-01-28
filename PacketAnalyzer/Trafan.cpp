@@ -288,14 +288,14 @@
 		dest.sin_addr.s_addr = iphdr->ip_destaddr;
 		char x[256];
 		sprintf(x, "%s\n", inet_ntoa(dest.sin_addr));
-		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["DstIP"]->Value = gcnew System::String(x);
+		//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["DstIP"]->Value = gcnew System::String(x);
 		ZeroMemory(x, 256);
 		sprintf(x, "%s\n", inet_ntoa(source.sin_addr));
-		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["SrcIP"]->Value = gcnew System::String(x);
+		//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["SrcIP"]->Value = gcnew System::String(x);
 
-		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TTL"]->Value = ((unsigned int)iphdr->ip_ttl);
+		/*DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TTL"]->Value = ((unsigned int)iphdr->ip_ttl);
 		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["PckLength"]->Value = ntohs(iphdr->ip_total_length);
-		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["IPvers"]->Value = ((unsigned int)iphdr->ip_version);
+		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["IPvers"]->Value = ((unsigned int)iphdr->ip_version);*/
 		print_ethernet_header((u_char*)Buffer);
 
 		fprintf(logfile, "\n");
@@ -335,23 +335,23 @@
 		fprintf(logfile, "\n\n***********************TCP Packet*************************\n");
 
 
-		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["DstPort"]->Value = (ntohs(tcpheader->dest_port));
+		/*DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["DstPort"]->Value = (ntohs(tcpheader->dest_port));
 		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["SrcPort"]->Value = (ntohs(tcpheader->source_port));
-		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["Checksum"]->Value = (ntohs(tcpheader->checksum));
+		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["Checksum"]->Value = (ntohs(tcpheader->checksum));*/
 		if ((unsigned int)tcpheader->ack) {
-			DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "ACK";
+			//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "ACK";
 		}
 		else if ((unsigned int)tcpheader->syn) {
-			DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "SYN";
+			//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "SYN";
 		}
 		else if ((unsigned int)tcpheader->rst) {
-			DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "RST";
+			//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "RST";
 		}
 		else if ((unsigned int)tcpheader->fin) {
-			DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "FIN";
+			//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["TCPFlag"]->Value = "FIN";
 		}
 
-		DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["Prot"]->Value = gcnew System::String("TCP");
+		//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["Prot"]->Value = gcnew System::String("TCP");
 
 		PrintIpHeader(Buffer, Size);
 		fprintf(logfile, "\n");

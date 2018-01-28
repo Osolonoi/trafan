@@ -1,6 +1,18 @@
 #pragma once
-#include "Trafan.h"
+#include "Notification.h"
 
+#pragma once
+// ConsoleApplication1.cpp : Defines the entry point for the console application.
+//
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+
+#include "stdio.h"
+#include "winsock2.h"   //need winsock for inet_ntoa and ntohs methods
+#define HAVE_REMOTE
+#include "pcap.h"   //Winpcap :)
+#include "TrafStat.h"
+#pragma comment(lib , "ws2_32.lib") //For winsock
+#pragma comment(lib , "wpcap.lib") //For winpcap
 
 namespace PacketAnalyzer {
 
@@ -29,7 +41,11 @@ namespace PacketAnalyzer {
 			//TODO: Add the constructor code here
 			//
 		}
-		void ThreadFunction();
+		void ThreadFunction()
+		{
+			/*MyThreadClass^ myThreadClassObject = gcnew MyThreadClass(this);
+			myThreadClassObject->Run();*/
+		}
 
 		void AddListItemMethod(String ^ items)
 		{
@@ -212,13 +228,6 @@ namespace PacketAnalyzer {
 		void InitializeComponent(void)
 		{
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-			this->Filter = (gcnew System::Windows::Forms::Label());
-			this->NIC = (gcnew System::Windows::Forms::Label());
-			this->Quantity = (gcnew System::Windows::Forms::Label());
-			this->BadPack = (gcnew System::Windows::Forms::Label());
-			this->Bytes = (gcnew System::Windows::Forms::Label());
-			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
-			this->comboBox3 = (gcnew System::Windows::Forms::ComboBox());
 			this->No = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->IPvers = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->SrcIP = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -233,13 +242,19 @@ namespace PacketAnalyzer {
 			this->Checksum = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->TCPFlag = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Anomaly = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->Filter = (gcnew System::Windows::Forms::Label());
+			this->NIC = (gcnew System::Windows::Forms::Label());
+			this->Quantity = (gcnew System::Windows::Forms::Label());
+			this->BadPack = (gcnew System::Windows::Forms::Label());
+			this->Bytes = (gcnew System::Windows::Forms::Label());
+			this->comboBox1 = (gcnew System::Windows::Forms::ComboBox());
+			this->comboBox3 = (gcnew System::Windows::Forms::ComboBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// dataGridView1
 			// 
 			this->dataGridView1->AllowUserToDeleteRows = false;
-			this->dataGridView1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Left | System::Windows::Forms::AnchorStyles::Right));
 			this->dataGridView1->AutoSizeColumnsMode = System::Windows::Forms::DataGridViewAutoSizeColumnsMode::AllCells;
 			this->dataGridView1->AutoSizeRowsMode = System::Windows::Forms::DataGridViewAutoSizeRowsMode::AllCells;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
@@ -253,76 +268,6 @@ namespace PacketAnalyzer {
 			this->dataGridView1->Size = System::Drawing::Size(783, 297);
 			this->dataGridView1->TabIndex = 0;
 			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &TrafStat::dataGridView1_CellContentClick);
-			// 
-			// Filter
-			// 
-			this->Filter->AutoSize = true;
-			this->Filter->Location = System::Drawing::Point(456, 9);
-			this->Filter->Name = L"Filter";
-			this->Filter->Size = System::Drawing::Size(29, 13);
-			this->Filter->TabIndex = 1;
-			this->Filter->Text = L"Filter";
-			// 
-			// NIC
-			// 
-			this->NIC->AutoSize = true;
-			this->NIC->Location = System::Drawing::Point(12, 9);
-			this->NIC->Name = L"NIC";
-			this->NIC->Size = System::Drawing::Size(133, 13);
-			this->NIC->TabIndex = 2;
-			this->NIC->Text = L"Network Interface Cotroller";
-			// 
-			// Quantity
-			// 
-			this->Quantity->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->Quantity->AutoSize = true;
-			this->Quantity->Location = System::Drawing::Point(62, 333);
-			this->Quantity->Name = L"Quantity";
-			this->Quantity->Size = System::Drawing::Size(46, 13);
-			this->Quantity->TabIndex = 3;
-			this->Quantity->Text = L"Qauntity";
-			// 
-			// BadPack
-			// 
-			this->BadPack->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
-			this->BadPack->AutoSize = true;
-			this->BadPack->Location = System::Drawing::Point(508, 350);
-			this->BadPack->Name = L"BadPack";
-			this->BadPack->Size = System::Drawing::Size(65, 13);
-			this->BadPack->TabIndex = 4;
-			this->BadPack->Text = L"BadPackets";
-			// 
-			// Bytes
-			// 
-			this->Bytes->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
-			this->Bytes->AutoSize = true;
-			this->Bytes->Location = System::Drawing::Point(216, 333);
-			this->Bytes->Name = L"Bytes";
-			this->Bytes->Size = System::Drawing::Size(33, 13);
-			this->Bytes->TabIndex = 6;
-			this->Bytes->Text = L"Bytes";
-			// 
-			// comboBox1
-			// 
-			this->comboBox1->FormattingEnabled = true;
-			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Qualcomm Atheros", L"Intel Centrino" });
-			this->comboBox1->Location = System::Drawing::Point(151, 6);
-			this->comboBox1->Name = L"comboBox1";
-			this->comboBox1->Size = System::Drawing::Size(121, 21);
-			this->comboBox1->TabIndex = 7;
-			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &TrafStat::comboBox1_SelectedIndexChanged);
-			// 
-			// comboBox3
-			// 
-			this->comboBox3->FormattingEnabled = true;
-			this->comboBox3->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
-				L"SrcIP", L"SrcMac", L"DstPort", L"Prot", L"PckLength",
-					L"TCPFlag"
-			});
-			this->comboBox3->Location = System::Drawing::Point(491, 6);
-			this->comboBox3->Name = L"comboBox3";
-			this->comboBox3->Size = System::Drawing::Size(121, 21);
-			this->comboBox3->TabIndex = 10;
 			// 
 			// No
 			// 
@@ -432,6 +377,77 @@ namespace PacketAnalyzer {
 			this->Anomaly->ReadOnly = true;
 			this->Anomaly->Width = 72;
 			// 
+			// Filter
+			// 
+			this->Filter->AutoSize = true;
+			this->Filter->Location = System::Drawing::Point(456, 9);
+			this->Filter->Name = L"Filter";
+			this->Filter->Size = System::Drawing::Size(29, 13);
+			this->Filter->TabIndex = 1;
+			this->Filter->Text = L"Filter";
+			// 
+			// NIC
+			// 
+			this->NIC->AutoSize = true;
+			this->NIC->Location = System::Drawing::Point(12, 9);
+			this->NIC->Name = L"NIC";
+			this->NIC->Size = System::Drawing::Size(133, 13);
+			this->NIC->TabIndex = 2;
+			this->NIC->Text = L"Network Interface Cotroller";
+			// 
+			// Quantity
+			// 
+			this->Quantity->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->Quantity->AutoSize = true;
+			this->Quantity->Location = System::Drawing::Point(62, 333);
+			this->Quantity->Name = L"Quantity";
+			this->Quantity->Size = System::Drawing::Size(46, 13);
+			this->Quantity->TabIndex = 3;
+			this->Quantity->Text = L"Qauntity";
+			// 
+			// BadPack
+			// 
+			this->BadPack->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
+			this->BadPack->AutoSize = true;
+			this->BadPack->Location = System::Drawing::Point(508, 350);
+			this->BadPack->Name = L"BadPack";
+			this->BadPack->Size = System::Drawing::Size(65, 13);
+			this->BadPack->TabIndex = 4;
+			this->BadPack->Text = L"BadPackets";
+			// 
+			// Bytes
+			// 
+			this->Bytes->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
+			this->Bytes->AutoSize = true;
+			this->Bytes->Location = System::Drawing::Point(216, 333);
+			this->Bytes->Name = L"Bytes";
+			this->Bytes->Size = System::Drawing::Size(33, 13);
+			this->Bytes->TabIndex = 6;
+			this->Bytes->Text = L"Bytes";
+			// 
+			// comboBox1
+			// 
+			this->comboBox1->FormattingEnabled = true;
+			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Qualcomm Atheros", L"Intel Centrino" });
+			this->comboBox1->Location = System::Drawing::Point(151, 6);
+			this->comboBox1->Name = L"comboBox1";
+			this->comboBox1->Size = System::Drawing::Size(121, 21);
+			this->comboBox1->TabIndex = 7;
+			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &TrafStat::comboBox1_SelectedIndexChanged);
+			// 
+			// comboBox3
+			// 
+			this->comboBox3->FormattingEnabled = true;
+			this->comboBox3->Items->AddRange(gcnew cli::array< System::Object^  >(6) {
+				L"SrcIP", L"SrcMac", L"DstPort", L"Prot", L"PckLength",
+					L"TCPFlag"
+			});
+			this->comboBox3->Location = System::Drawing::Point(491, 6);
+			this->comboBox3->Name = L"comboBox3";
+			this->comboBox3->Size = System::Drawing::Size(121, 21);
+			this->comboBox3->TabIndex = 10;
+			this->comboBox3->SelectedIndexChanged += gcnew System::EventHandler(this, &TrafStat::comboBox3_SelectedIndexChanged);
+			// 
 			// TrafStat
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -452,9 +468,6 @@ namespace PacketAnalyzer {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
-			myDelegate = gcnew AddListItem(this, &TrafStat::AddListItemMethod);
-
 
 		}
 #pragma endregion
@@ -482,7 +495,11 @@ myThread->Start();*/
 	}
 
 
-	};
+	private: System::Void comboBox3_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
+		Notification^ form2 = gcnew Notification();
+		form2->Show();
+	}
+};
 
 	// Set the packing to a 1 byte boundary
 	//#include "pshpack1.h"
@@ -587,6 +604,11 @@ myThread->Start();*/
 		ICMP_HDR *icmpheader;
 		u_char *data;
 
+
+	/*	MyThreadClass::MyThreadClass()
+		{
+
+		}*/
 		int counter = 0;
 
 		void MyThreadClass::Initialize()
@@ -703,8 +725,8 @@ myThread->Start();*/
 
 				case 2: //IGMP Protocol
 					igmp++;
-					array<Object^>^myStringArray = { "IGMP" };
-					myFormControl1->Invoke(myFormControl1->myDelegate, myStringArray);
+	//				array<Object^>^myStringArray = { "IGMP" };
+		//			myFormControl1->Invoke(myFormControl1->myDelegate, myStringArray);
 					//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["No"]->Value = DataGridView1->RowCount - 1;
 
 					//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["Prot"]->Value = gcnew System::String("IGMP");
@@ -722,8 +744,8 @@ myThread->Start();*/
 
 				default: //Some Other Protocol like ARP etc.
 					others++;
-					array<Object^>^myStringArray = { "Other" };
-					myFormControl1->Invoke(myFormControl1->myDelegate, myStringArray);
+//					array<Object^>^myStringArray = { "Other" };
+//					myFormControl1->Invoke(myFormControl1->myDelegate, myStringArray);
 
 					//DataGridView1->Rows[DataGridView1->RowCount - 2]->Cells["Prot"]->Value = gcnew System::String("Other");
 					break;
@@ -1023,11 +1045,7 @@ myThread->Start();*/
 	};
 
 
-	void TrafStat::ThreadFunction()
-	{
-		MyThreadClass^ myThreadClassObject = gcnew MyThreadClass(this);
-		myThreadClassObject->Run();
-	}
+	
 
 
 
