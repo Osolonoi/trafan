@@ -1,12 +1,13 @@
 
 #include "stdio.h"
 #include "TrafStat.h"
+#include "NewThreadClass.h"
 
 
 
 using namespace System;
 using namespace System::Windows::Forms;
-
+using namespace System::Threading;
 
 
 
@@ -20,5 +21,6 @@ void Main(array<String^>^ args) {
 
 
 }
+
 
 
