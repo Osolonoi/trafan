@@ -53,7 +53,6 @@ namespace PacketAnalyzer
 
 		Trafan(System::Windows::Forms::Form^, AddListItem ^);
 
-		void Run();
 		void AddRow();
 		array<String^>^ GetDevices();
 

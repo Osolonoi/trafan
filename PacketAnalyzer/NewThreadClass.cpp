@@ -14,15 +14,15 @@ namespace PacketAnalyzer
 		_delToRun = DelToRun;
 	}
 
-	void Trafan::Run()
-	{
-		// Execute the specified delegate on the thread that owns
-		// 'myFormControl1' control's underlying window handle.
+	//void Trafan::Run()
+	//{
+	//	// Execute the specified delegate on the thread that owns
+	//	// 'myFormControl1' control's underlying window handle.
 
 
-		Initialize(3);
+	//	Initialize(3);
 
-	}
+	//}
 
 	void Trafan::AddRow()
 	{
@@ -174,7 +174,7 @@ namespace PacketAnalyzer
 
 
 		/* Jump to the selected adapter */
-		for (d = alldevs, i = 0; i < inum - 1; d = d->next, i++);
+		for (d = alldevs, i = 0; i < inum; d = d->next, i++);
 
 		/* Open the device */
 		if ((fp = pcap_open(d->name,

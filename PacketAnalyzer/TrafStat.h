@@ -73,11 +73,17 @@ namespace PacketAnalyzer {
 
 		void SetDevicesMethod(array<String^>^ devices)
 		{
-			comboBox1->Items->AddRange(devices);
+			for (int i = 0; i < devices->Length; ++i)
+			{
+				if (devices[i] != nullptr)
+				{
+					comboBox1->Items->Add(devices[i]);
+				}
+			}
 		}
 	private: Thread ^ trd;
 			 //delegate void DelegateThreadTask();
-	private: void ThreadTask()
+	private: void ThreadTask(Object^ index)
 	{
 		int stp;
 		int newval;
@@ -105,7 +111,7 @@ namespace PacketAnalyzer {
 
 
 		Trafan ^cl = gcnew Trafan((System::Windows::Forms::Form^)this, myDelegate);
-		cl->Run();
+		cl->Initialize((int)index);
 		//}
 	}
 
@@ -543,10 +549,11 @@ namespace PacketAnalyzer {
 
 /*myThread = gcnew Thread(gcnew ThreadStart(Trafanobject, &Trafan::Initialize));
 myThread->Start();*/
-		ThreadStart ^myThreadDelegate = gcnew ThreadStart(this, &TrafStat::ThreadTask);
+		ParameterizedThreadStart ^myThreadDelegate = gcnew ParameterizedThreadStart(this, &TrafStat::ThreadTask);
+
 		trd = gcnew Thread(myThreadDelegate);
 		trd->IsBackground = false;
-		trd->Start();
+		trd->Start(comboBox1->SelectedIndex);
 		//ThreadTask();
 	}
 
