@@ -140,7 +140,6 @@
   <ItemGroup>
     <ClCompile Include="NewThreadClass.cpp" />
     <ClCompile Include="Notification.cpp" />
-    <ClCompile Include="Trafan.cpp" />
     <ClCompile Include="TrafStat.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +147,7 @@
     <ClInclude Include="Notification.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="Trafan.h" />
+    <ClInclude Include="TrafanData.h" />
     <ClInclude Include="TrafStat.h">
       <FileType>CppForm</FileType>
     </ClInclude>

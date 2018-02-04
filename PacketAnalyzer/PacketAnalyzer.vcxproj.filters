@@ -21,9 +21,6 @@
     <ClCompile Include="TrafStat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Trafan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NewThreadClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -35,10 +32,10 @@
     <ClInclude Include="Notification.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Trafan.h">
+    <ClInclude Include="NewThreadClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NewThreadClass.h">
+    <ClInclude Include="TrafanData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

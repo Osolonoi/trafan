@@ -31,6 +31,11 @@ namespace PacketAnalyzer {
 			//
 			//TODO: Add the constructor code here
 			//
+
+			Trafan ^cl = gcnew Trafan((System::Windows::Forms::Form^)this, myDelegate);
+			//cl->GetDevices();
+
+			SetDevicesMethod(cl->GetDevices());
 		}
 
 		/*void StartThread()
@@ -46,18 +51,29 @@ namespace PacketAnalyzer {
 			myThreadClassObject->Run();
 		}*/
 
-		void AddListItemMethod(String ^ items)
+		void AddListItemMethod(array<String^>^ items)
 		{
-			String^ myItem;
-			for (int i = 0; i < 1006; i++)
-			{
-				myItem = "MyListItem {0}", i;
-				dataGridView1->Rows->Add();
-				dataGridView1->Rows[dataGridView1->RowCount - 2]->Cells["Prot"]->Value = "dsddasd";
+			/*for (int i = 0; i < 1006; i++)
+			{*/
+			/*myItem = "MyListItem {0}", i;*/
+			dataGridView1->Rows->Add();
 
-				dataGridView1->Update();
+			// 0 : No
+			// 1 : Prot
 
-			}
+			dataGridView1->Rows[dataGridView1->RowCount - 2]->Cells["No"]->Value = items[0];
+			dataGridView1->Rows[dataGridView1->RowCount - 2]->Cells["Prot"]->Value = items[1];
+			dataGridView1->Rows[dataGridView1->RowCount - 2]->Cells["SrcMac"]->Value = items[2];
+			dataGridView1->Rows[dataGridView1->RowCount - 2]->Cells["SrcIp"]->Value = items[3];
+
+			dataGridView1->Update();
+
+			//}
+		}
+
+		void SetDevicesMethod(array<String^>^ devices)
+		{
+			comboBox1->Items->AddRange(devices);
 		}
 	private: Thread ^ trd;
 			 //delegate void DelegateThreadTask();
@@ -88,18 +104,11 @@ namespace PacketAnalyzer {
 		//this->Invoke(myDelegate);
 
 
-		NewThreadClass ^cl = gcnew NewThreadClass((System::Windows::Forms::Form^)this, myDelegate);
+		Trafan ^cl = gcnew Trafan((System::Windows::Forms::Form^)this, myDelegate);
 		cl->Run();
 		//}
 	}
-	private: void repeat()
-	{
-		while (true)
-		{
-			ThreadTask();
-			Thread::Sleep(100);
-		}
-	}
+
 
 	protected:
 		/// <summary>
@@ -303,9 +312,10 @@ namespace PacketAnalyzer {
 					this->SrcIP, this->SrcMac, this->SrcPort, this->DstIP, this->DstMac, this->DstPort, this->Prot, this->TTL, this->PckLength, this->Checksum,
 					this->TCPFlag, this->Anomaly
 			});
-			this->dataGridView1->Location = System::Drawing::Point(7, 25);
+			this->dataGridView1->Location = System::Drawing::Point(13, 46);
+			this->dataGridView1->Margin = System::Windows::Forms::Padding(6, 6, 6, 6);
 			this->dataGridView1->Name = L"dataGridView1";
-			this->dataGridView1->Size = System::Drawing::Size(783, 297);
+			this->dataGridView1->Size = System::Drawing::Size(1436, 548);
 			this->dataGridView1->TabIndex = 0;
 			this->dataGridView1->CellContentClick += gcnew System::Windows::Forms::DataGridViewCellEventHandler(this, &TrafStat::dataGridView1_CellContentClick);
 			// 
@@ -315,14 +325,14 @@ namespace PacketAnalyzer {
 			this->No->FillWeight = 22;
 			this->No->HeaderText = L"No";
 			this->No->Name = L"No";
-			this->No->Width = 46;
+			this->No->Width = 78;
 			// 
 			// IPvers
 			// 
 			this->IPvers->HeaderText = L"IPvers";
 			this->IPvers->Name = L"IPvers";
 			this->IPvers->ReadOnly = true;
-			this->IPvers->Width = 62;
+			this->IPvers->Width = 108;
 			// 
 			// SrcIP
 			// 
@@ -330,7 +340,7 @@ namespace PacketAnalyzer {
 			this->SrcIP->FillWeight = 122;
 			this->SrcIP->HeaderText = L"SrcIP";
 			this->SrcIP->Name = L"SrcIP";
-			this->SrcIP->Width = 58;
+			this->SrcIP->Width = 101;
 			// 
 			// SrcMac
 			// 
@@ -338,7 +348,7 @@ namespace PacketAnalyzer {
 			this->SrcMac->FillWeight = 122;
 			this->SrcMac->HeaderText = L"SrcMac";
 			this->SrcMac->Name = L"SrcMac";
-			this->SrcMac->Width = 69;
+			this->SrcMac->Width = 121;
 			// 
 			// SrcPort
 			// 
@@ -346,7 +356,7 @@ namespace PacketAnalyzer {
 			this->SrcPort->HeaderText = L"SrcPort";
 			this->SrcPort->Name = L"SrcPort";
 			this->SrcPort->ReadOnly = true;
-			this->SrcPort->Width = 67;
+			this->SrcPort->Width = 118;
 			// 
 			// DstIP
 			// 
@@ -354,7 +364,6 @@ namespace PacketAnalyzer {
 			this->DstIP->FillWeight = 122;
 			this->DstIP->HeaderText = L"DstIP";
 			this->DstIP->Name = L"DstIP";
-			this->DstIP->Width = 58;
 			// 
 			// DstMac
 			// 
@@ -362,14 +371,14 @@ namespace PacketAnalyzer {
 			this->DstMac->FillWeight = 122;
 			this->DstMac->HeaderText = L"DstMac";
 			this->DstMac->Name = L"DstMac";
-			this->DstMac->Width = 69;
+			this->DstMac->Width = 120;
 			// 
 			// DstPort
 			// 
 			this->DstPort->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::AllCells;
 			this->DstPort->HeaderText = L"DstPort";
 			this->DstPort->Name = L"DstPort";
-			this->DstPort->Width = 67;
+			this->DstPort->Width = 117;
 			// 
 			// Prot
 			// 
@@ -377,7 +386,7 @@ namespace PacketAnalyzer {
 			this->Prot->FillWeight = 50;
 			this->Prot->HeaderText = L"Prot";
 			this->Prot->Name = L"Prot";
-			this->Prot->Width = 51;
+			this->Prot->Width = 88;
 			// 
 			// TTL
 			// 
@@ -385,7 +394,7 @@ namespace PacketAnalyzer {
 			this->TTL->FillWeight = 50;
 			this->TTL->HeaderText = L"TTL";
 			this->TTL->Name = L"TTL";
-			this->TTL->Width = 52;
+			this->TTL->Width = 90;
 			// 
 			// PckLength
 			// 
@@ -393,13 +402,13 @@ namespace PacketAnalyzer {
 			this->PckLength->FillWeight = 50;
 			this->PckLength->HeaderText = L"PckLength";
 			this->PckLength->Name = L"PckLength";
-			this->PckLength->Width = 84;
+			this->PckLength->Width = 146;
 			// 
 			// Checksum
 			// 
 			this->Checksum->HeaderText = L"Checksum";
 			this->Checksum->Name = L"Checksum";
-			this->Checksum->Width = 82;
+			this->Checksum->Width = 147;
 			// 
 			// TCPFlag
 			// 
@@ -407,7 +416,7 @@ namespace PacketAnalyzer {
 			this->TCPFlag->FillWeight = 50;
 			this->TCPFlag->HeaderText = L"TCPFlag";
 			this->TCPFlag->Name = L"TCPFlag";
-			this->TCPFlag->Width = 73;
+			this->TCPFlag->Width = 132;
 			// 
 			// Anomaly
 			// 
@@ -415,23 +424,25 @@ namespace PacketAnalyzer {
 			this->Anomaly->HeaderText = L"Anomaly";
 			this->Anomaly->Name = L"Anomaly";
 			this->Anomaly->ReadOnly = true;
-			this->Anomaly->Width = 72;
+			this->Anomaly->Width = 130;
 			// 
 			// Filter
 			// 
 			this->Filter->AutoSize = true;
-			this->Filter->Location = System::Drawing::Point(456, 9);
+			this->Filter->Location = System::Drawing::Point(836, 17);
+			this->Filter->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->Filter->Name = L"Filter";
-			this->Filter->Size = System::Drawing::Size(29, 13);
+			this->Filter->Size = System::Drawing::Size(54, 25);
 			this->Filter->TabIndex = 1;
 			this->Filter->Text = L"Filter";
 			// 
 			// NIC
 			// 
 			this->NIC->AutoSize = true;
-			this->NIC->Location = System::Drawing::Point(12, 9);
+			this->NIC->Location = System::Drawing::Point(22, 17);
+			this->NIC->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->NIC->Name = L"NIC";
-			this->NIC->Size = System::Drawing::Size(133, 13);
+			this->NIC->Size = System::Drawing::Size(241, 25);
 			this->NIC->TabIndex = 2;
 			this->NIC->Text = L"Network Interface Cotroller";
 			// 
@@ -439,9 +450,10 @@ namespace PacketAnalyzer {
 			// 
 			this->Quantity->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->Quantity->AutoSize = true;
-			this->Quantity->Location = System::Drawing::Point(62, 333);
+			this->Quantity->Location = System::Drawing::Point(114, 615);
+			this->Quantity->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->Quantity->Name = L"Quantity";
-			this->Quantity->Size = System::Drawing::Size(46, 13);
+			this->Quantity->Size = System::Drawing::Size(85, 25);
 			this->Quantity->TabIndex = 3;
 			this->Quantity->Text = L"Qauntity";
 			// 
@@ -449,9 +461,10 @@ namespace PacketAnalyzer {
 			// 
 			this->BadPack->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Right));
 			this->BadPack->AutoSize = true;
-			this->BadPack->Location = System::Drawing::Point(508, 350);
+			this->BadPack->Location = System::Drawing::Point(931, 646);
+			this->BadPack->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->BadPack->Name = L"BadPack";
-			this->BadPack->Size = System::Drawing::Size(65, 13);
+			this->BadPack->Size = System::Drawing::Size(117, 25);
 			this->BadPack->TabIndex = 4;
 			this->BadPack->Text = L"BadPackets";
 			// 
@@ -459,19 +472,20 @@ namespace PacketAnalyzer {
 			// 
 			this->Bytes->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->Bytes->AutoSize = true;
-			this->Bytes->Location = System::Drawing::Point(216, 333);
+			this->Bytes->Location = System::Drawing::Point(396, 615);
+			this->Bytes->Margin = System::Windows::Forms::Padding(6, 0, 6, 0);
 			this->Bytes->Name = L"Bytes";
-			this->Bytes->Size = System::Drawing::Size(33, 13);
+			this->Bytes->Size = System::Drawing::Size(61, 25);
 			this->Bytes->TabIndex = 6;
 			this->Bytes->Text = L"Bytes";
 			// 
 			// comboBox1
 			// 
 			this->comboBox1->FormattingEnabled = true;
-			this->comboBox1->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Qualcomm Atheros", L"Intel Centrino" });
-			this->comboBox1->Location = System::Drawing::Point(151, 6);
+			this->comboBox1->Location = System::Drawing::Point(277, 11);
+			this->comboBox1->Margin = System::Windows::Forms::Padding(6, 6, 6, 6);
 			this->comboBox1->Name = L"comboBox1";
-			this->comboBox1->Size = System::Drawing::Size(121, 21);
+			this->comboBox1->Size = System::Drawing::Size(537, 32);
 			this->comboBox1->TabIndex = 7;
 			this->comboBox1->SelectedIndexChanged += gcnew System::EventHandler(this, &TrafStat::comboBox1_SelectedIndexChanged);
 			// 
@@ -482,18 +496,19 @@ namespace PacketAnalyzer {
 				L"SrcIP", L"SrcMac", L"DstPort", L"Prot", L"PckLength",
 					L"TCPFlag"
 			});
-			this->comboBox3->Location = System::Drawing::Point(491, 6);
+			this->comboBox3->Location = System::Drawing::Point(900, 11);
+			this->comboBox3->Margin = System::Windows::Forms::Padding(6, 6, 6, 6);
 			this->comboBox3->Name = L"comboBox3";
-			this->comboBox3->Size = System::Drawing::Size(121, 21);
+			this->comboBox3->Size = System::Drawing::Size(219, 32);
 			this->comboBox3->TabIndex = 10;
 			this->comboBox3->SelectedIndexChanged += gcnew System::EventHandler(this, &TrafStat::comboBox3_SelectedIndexChanged);
 			// 
 			// TrafStat
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
+			this->AutoScaleDimensions = System::Drawing::SizeF(11, 24);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::GrayText;
-			this->ClientSize = System::Drawing::Size(802, 372);
+			this->ClientSize = System::Drawing::Size(1470, 687);
 			this->Controls->Add(this->comboBox3);
 			this->Controls->Add(this->comboBox1);
 			this->Controls->Add(this->Bytes);
@@ -502,6 +517,7 @@ namespace PacketAnalyzer {
 			this->Controls->Add(this->NIC);
 			this->Controls->Add(this->Filter);
 			this->Controls->Add(this->dataGridView1);
+			this->Margin = System::Windows::Forms::Padding(6, 6, 6, 6);
 			this->Name = L"TrafStat";
 			this->Text = L"TrafStat";
 			this->WindowState = System::Windows::Forms::FormWindowState::Maximized;
